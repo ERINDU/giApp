@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Image,View,ScrollView,TextInput,Text,StyleSheet,FlatList,ImageBackground } from 'react-native';
+import { TouchableOpacity,Button,Share,Image,View,ScrollView,TextInput,Text,StyleSheet,FlatList,ImageBackground } from 'react-native';
 import Header from './component/Header';
 import Lightbox from 'react-native-lightbox';
 
@@ -13,8 +13,18 @@ export default class App extends Component {
       input:''
     };
 
-
+this.onClick=this.onClick.bind(this);
   }
+  onClick() {
+  Share.share({
+
+    message:' item=>item.images.original.url',
+    title: 'Wow, did you see that?'
+  }, {
+
+    dialogTitle: 'Share BAM goodness'
+  })
+}
   componentDidMount(input){
     this.changeGifDisplay();
  }
@@ -39,9 +49,10 @@ render() {
     return (
       <View>
         <Header/>
+
       <ScrollView>
         <TextInput
-          placeholder='Type your giphy'
+          placeholder='Search a Giphy'
           style={{height: 40, borderColor: 'gray', borderWidth:2}}
         onChangeText={
           (input) => this.setState({input})
@@ -60,11 +71,18 @@ render() {
               (
                 <View>
 
-                  <Lightbox underlayColor='white'>
+                  <Lightbox underlayColor='white'
+                    renderHeader={close => (
+                      <TouchableOpacity onPress={this.onClick}>
+                        <Text style={styles.closeButton}>SHARE</Text>
+                      </TouchableOpacity>)}>
+              <View>
                 <Image
                   style={styles.imag}
                    source={{uri:item.images.original.url}}
                 style={{width:400,height:200}} />
+
+              </View>
          </Lightbox>
 
               </View>)
@@ -80,6 +98,16 @@ var styles = StyleSheet.create({
 imag: {
   width:300,
   height:200
-}
+},
+closeButton: {
+   color: 'white',
+   borderWidth: 1,
+   borderColor: 'white',
+   padding: 8,
+   borderRadius: 3,
+   textAlign: 'center',
+   margin: 10,
+   alignSelf: 'flex-end',
+ }
 
 })
