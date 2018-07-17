@@ -10,20 +10,23 @@ export default class App extends Component {
 
     this.state = {
       data:[],
-      input:''
+      input:'',
+      index:''
     };
+
 
     this.onClick=this.onClick.bind(this);
   }
-  onClick() {
-  Share.share({
-
-    message:'item.images.original.url',
+  onClick(index) {
+  Share.share(
+    {
+    message:this.state.index,
     title: 'Wow,Giphy!!!!'
   }, {
 
     dialogTitle: 'Share Giphy'
   })
+this.setState({index})
 }
   componentDidMount(input){
     this.changeGifDisplay();
@@ -33,7 +36,7 @@ export default class App extends Component {
   fetch('https://api.giphy.com/v1/gifs/search?api_key=xTdy3ovyOU4voJ9cAXl5EwVvVvCfohj3&q=' + input +'&limit=5&offset=0')
   .then(res => res.json())
   .then((result) =>{
-    console.log("data from api",result.data[0].images.original.url)
+    //console.log("data from api",result.data[0].images.original.url)
     this.setState({
       data:result.data
     })
@@ -67,25 +70,44 @@ render() {
             </Text>
             <FlatList
               data={this.state.data}
-               keyExtractor={item=>item.images.original.url}
-              renderItem={({item})=>
-              (
-                <View>
-                  <Lightbox underlayColor='white'
-                    renderHeader={close => (
-                      <TouchableOpacity onPress={this.onClick}>
-                        <Text style={styles.closeButton}>SHARE</Text>
-                      </TouchableOpacity>)
-                    }>
-                      <View>
-                        <Image
-                          style={styles.imag}
-                           source={{uri:item.images.original.url}}
-                        style={{width:400,height:200}} />
+               keyExtractor={(item,index)=>item.images.original.url}
 
-                      </View>
-                    </Lightbox>
-                  </View>)
+              renderItem={({item,index})=>{
+                //console.log(index)
+                //console.log("url:",item.images.original.url)
+                return(
+                  <View>
+                        <Lightbox underlayColor='white'
+
+                      renderHeader={close =>{
+                       return (
+                        <TouchableOpacity  onPress={
+                            ()=>{
+                              console.log(item.images.original.url)
+                              Share.share(
+                              {
+                                message:item.images.original.url,
+                                title: 'Wow,Giphy!!!!'
+                              }, {
+
+                                dialogTitle: 'Share Giphy'
+                              })
+                            }
+                          }>
+                          <Text style={styles.closeButton}>SHARE</Text>
+                        </TouchableOpacity>)}
+                      } >
+                        <View>
+                          <Image
+                            style={styles.imag}
+                             source={{uri:item.images.original.url}}
+                          style={{width:400,height:200}} />
+
+                        </View>
+                      </Lightbox>
+                    </View>)
+              }
+
             }
             />
             </ScrollView>
