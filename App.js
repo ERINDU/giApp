@@ -13,16 +13,16 @@ export default class App extends Component {
       input:''
     };
 
-this.onClick=this.onClick.bind(this);
+    this.onClick=this.onClick.bind(this);
   }
   onClick() {
   Share.share({
 
-    message:' item=>item.images.original.url',
-    title: 'Wow, did you see that?'
+    message:'item.images.original.url',
+    title: 'Wow,Giphy!!!!'
   }, {
 
-    dialogTitle: 'Share BAM goodness'
+    dialogTitle: 'Share Giphy'
   })
 }
   componentDidMount(input){
@@ -47,6 +47,7 @@ this.onClick=this.onClick.bind(this);
 render() {
 
     return (
+
       <View>
         <Header/>
 
@@ -70,22 +71,21 @@ render() {
               renderItem={({item})=>
               (
                 <View>
-
                   <Lightbox underlayColor='white'
                     renderHeader={close => (
                       <TouchableOpacity onPress={this.onClick}>
                         <Text style={styles.closeButton}>SHARE</Text>
-                      </TouchableOpacity>)}>
-              <View>
-                <Image
-                  style={styles.imag}
-                   source={{uri:item.images.original.url}}
-                style={{width:400,height:200}} />
+                      </TouchableOpacity>)
+                    }>
+                      <View>
+                        <Image
+                          style={styles.imag}
+                           source={{uri:item.images.original.url}}
+                        style={{width:400,height:200}} />
 
-              </View>
-         </Lightbox>
-
-              </View>)
+                      </View>
+                    </Lightbox>
+                  </View>)
             }
             />
             </ScrollView>
