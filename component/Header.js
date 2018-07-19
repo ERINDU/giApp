@@ -4,7 +4,7 @@ import{ View,Text,StyleSheet
 } from 'react-native'
 export default ()=>(
   <View style={styles.header}>
-      <Text style={styles.title}>My Giphy</Text>
+      <Text style={styles.title}>Giphies</Text>
   </View>
 )
 const styles = StyleSheet.create({

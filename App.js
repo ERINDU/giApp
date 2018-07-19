@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { TouchableOpacity,Button,Share,Image,View,ScrollView,TextInput,Text,StyleSheet,FlatList,ImageBackground } from 'react-native';
 import Header from './component/Header';
+import { SearchBar } from 'react-native-elements';
 import Lightbox from 'react-native-lightbox';
 
 
@@ -13,21 +14,8 @@ export default class App extends Component {
       input:'',
       index:''
     };
-
-
-    this.onClick=this.onClick.bind(this);
-  }
-  onClick(index) {
-  Share.share(
-    {
-    message:this.state.index,
-    title: 'Wow,Giphy!!!!'
-  }, {
-
-    dialogTitle: 'Share Giphy'
-  })
-this.setState({index})
 }
+
   componentDidMount(input){
     this.changeGifDisplay();
  }
@@ -51,24 +39,24 @@ render() {
 
     return (
 
-      <View>
+      <View style={{flex:1,backgroundColor:'#e8e8e8'}}>
         <Header/>
-
-      <ScrollView>
-        <TextInput
-          placeholder='Search a Giphy'
-          style={{height: 40, borderColor: 'gray', borderWidth:2}}
-        onChangeText={
-          (input) => this.setState({input})
-        }
-        value={this.state.input}
-        onSubmit={this.changeGifDisplay()}
-        />
-
-            <Text style={{fontSize:18}}>
-              Display a Giphy
-            </Text>
-            <FlatList
+        <View style={{paddingTop:40}}>
+          <SearchBar
+          platform="android"
+          round
+          showLoading
+          lightTheme
+          onChangeText={(input) => this.setState({input})}
+          onClear={(input) => this.setState({input:""})}
+          placeholder='Search...'
+          value={this.state.input}
+          onSubmit={this.changeGifDisplay()}
+          inputContainerStyle={styles.inputContainerStyle}
+         />
+        </View>
+      <ScrollView  >
+      <FlatList
               data={this.state.data}
                keyExtractor={(item,index)=>item.images.original.url}
 
@@ -99,9 +87,9 @@ render() {
                       } >
                         <View>
                           <Image
-                            style={styles.imag}
+
                              source={{uri:item.images.original.url}}
-                          style={{width:400,height:200}} />
+                          style={{borderColor: 'black',margin: 10,alignItems:'center',marginLeft:50,justifyContent:'center',width:250,height:180,borderRadius:3,borderWidth:2}} />
 
                         </View>
                       </Lightbox>
@@ -117,10 +105,8 @@ render() {
   }
 }
 var styles = StyleSheet.create({
-imag: {
-  width:300,
-  height:200
-},
+
+
 closeButton: {
    color: 'white',
    borderWidth: 1,
@@ -130,6 +116,10 @@ closeButton: {
    textAlign: 'center',
    margin: 10,
    alignSelf: 'flex-end',
+ },
+
+ container:{
+   paddingTop:100,
  }
 
 })
